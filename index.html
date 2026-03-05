@@ -10,7 +10,7 @@
         rel="stylesheet">
 
     <style>
-        /* --- THEME CONFIG --- */
+        /* --- CORE THEME --- */
         :root {
             --bg-deep: #050505;
             --panel-bg: rgba(20, 20, 20, 0.9);
@@ -37,7 +37,6 @@
             position: relative;
             touch-action: manipulation;
             background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, var(--bg-deep) 100%);
-            transition: background 0.5s ease;
         }
 
         /* --- BACKGROUND ANIMATION --- */
@@ -73,18 +72,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* --- ZELDA SHIELD (Hidden by default) --- */
-        #hylian-shield {
-            position: absolute;
-            top: 40px;
-            width: 120px;
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.5s;
-            z-index: 1;
-            pointer-events: none;
-            filter: drop-shadow(0 0 15px #ffd700);
-        }
-
         .main-hub {
             width: 90%;
             max-width: 800px;
@@ -107,8 +94,6 @@
             line-height: 1.5;
             cursor: pointer;
             user-select: none;
-            position: relative;
-            z-index: 3;
         }
 
         .subtitle {
@@ -227,9 +212,8 @@
 
         /* --- COMMAND GRID --- */
         .command-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+            display: flex;
+            justify-content: center;
             margin-bottom: 40px;
             width: 100%;
         }
@@ -246,6 +230,7 @@
             box-shadow: 0 0 10px rgba(176, 38, 255, 0.1);
             text-transform: uppercase;
             width: 100%;
+            max-width: 400px;
             box-sizing: border-box;
         }
 
@@ -259,25 +244,6 @@
             margin-top: 10px; margin-bottom: 20px; min-height: 20px; color: var(--p1-color);
             font-family: 'Rajdhani', monospace; font-size: 1.2rem; font-weight: bold;
         }
-
-        /* --- THEME SELECTOR --- */
-        .config-box {
-            border-top: 1px solid #333;
-            padding-top: 20px;
-            margin-bottom: 40px;
-        }
-        .config-title {
-            font-family: 'Press Start 2P'; font-size: 0.6rem; color: #666; margin-bottom: 15px;
-        }
-        .theme-row {
-            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-        }
-        .theme-btn {
-            background: #111; border: 1px solid #444; color: #888;
-            padding: 8px 12px; font-family: 'Rajdhani'; font-weight: bold; cursor: pointer;
-            font-size: 0.8rem; text-transform: uppercase; transition: 0.2s;
-        }
-        .theme-btn:hover { border-color: #fff; color: #fff; }
 
         /* --- QUEST LOG --- */
         .quest-box {
@@ -364,7 +330,6 @@
     <div id="rain-box" class="rain-container"></div>
 
     <div class="main-hub">
-        <img id="hylian-shield" src="zeldashield.png" alt="Shield">
         
         <h1 onclick="triggerMobileCheat()">Server: E & D</h1>
 
@@ -407,28 +372,6 @@
 
         <div class="command-grid">
             <button class="loot-btn" onclick="dropLoot()">🎁 DAILY LOOT BOX</button>
-
-            <a href="comfort.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">
-                    ♥ COMFORT PROTOCOL ♥
-                </button>
-            </a>
-
-            <a href="boss.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #fff; color: #fff;">
-                    ⚠️ BOSS RAID ⚠️
-                </button>
-            </a>
-        </div>
-
-        <div class="config-box">
-            <div class="config-title">SYSTEM CONFIGURATION</div>
-            <div class="theme-row">
-                <button class="theme-btn" onclick="setTheme('default')">DEFAULT</button>
-                <button class="theme-btn" onclick="setTheme('love')">LOVER.OS</button>
-                <button class="theme-btn" onclick="setTheme('matrix')">NETRUNNER</button>
-                <button class="theme-btn" onclick="setTheme('hyrule')" style="color: gold; border-color: gold;">HYRULE</button>
-            </div>
         </div>
 
         <div class="quest-box">
@@ -465,64 +408,15 @@
 
     <script>
         // --- CONFIGURATION ---
-        const startDate = new Date('2026-03-05T00:00:00'); // Reset to today!
-        const herTimeZone = 'America/Chicago'; // Central Time matches the 13hr gap exactly
+        // Anniversary Date updated to Feb 28, 2026
+        const startDate = new Date('2026-02-28T00:00:00'); 
+        const herTimeZone = 'America/Chicago'; 
 
-        // --- THEME SWITCHER LOGIC ---
-        function setTheme(theme) {
-            const root = document.documentElement;
-            const shield = document.getElementById('hylian-shield');
-            const bg = document.getElementById('emoji-container');
-            
-            // RESET
-            shield.style.opacity = '0';
-            shield.style.transform = 'translateY(0) scale(1)';
-            
-            if (theme === 'default') {
-                root.style.setProperty('--p1-color', '#00f3ff');
-                root.style.setProperty('--p2-color', '#b026ff');
-                root.style.setProperty('--active-green', '#00ff41');
-                root.style.setProperty('--bg-deep', '#050505');
-                bg.innerHTML = '<span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span> <span>🕷️</span> <span>🗡️</span>';
-            } 
-            else if (theme === 'love') {
-                root.style.setProperty('--p1-color', '#ff3366');
-                root.style.setProperty('--p2-color', '#ff99cc');
-                root.style.setProperty('--active-green', '#ff3366');
-                root.style.setProperty('--bg-deep', '#1a0505');
-                bg.innerHTML = '<span>💖</span> <span>💋</span> <span>💌</span> <span>💑</span> <span>🌸</span> <span>🎀</span>';
-            } 
-            else if (theme === 'matrix') {
-                root.style.setProperty('--p1-color', '#00ff00');
-                root.style.setProperty('--p2-color', '#008f11');
-                root.style.setProperty('--active-green', '#00ff00');
-                root.style.setProperty('--bg-deep', '#000000');
-                bg.innerHTML = '<span>0</span> <span>1</span> <span>0</span> <span>1</span> <span>💾</span> <span>📠</span>';
-            }
-            else if (theme === 'hyrule') {
-                root.style.setProperty('--p1-color', '#10a830'); /* Link Green */
-                root.style.setProperty('--p2-color', '#ffd700'); /* Zelda Gold */
-                root.style.setProperty('--active-green', '#ffd700');
-                root.style.setProperty('--bg-deep', '#0a0800'); /* Deep Earth */
-                bg.innerHTML = '<span>🗡️</span> <span>🛡️</span> <span>🧚</span> <span>💎</span> <span>🏺</span> <span>🏹</span>';
-                
-                // Show Shield
-                shield.style.opacity = '1';
-                shield.style.transform = 'translateY(-20px) scale(1.1)';
-            }
-            
-            localStorage.setItem('siteTheme', theme);
-        }
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('siteTheme');
-        if (savedTheme) setTheme(savedTheme);
-
-        // --- LOOT ---
+        // --- LOOT TABLE (CLEANED) ---
         const lootTable = [
             "Item: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
             "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon",
-            "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
+            "Status: Thinking about Destiny... 💭", "Inventory: +1 Kiss 💋",
             "Reminder: We make a great team 🎮", "Drop: Virtual Forehead Kiss",
             "Achievement: Woke up cute today", "System: I miss you more than my PC",
             "Buff: +50 Happiness", "Note: You are my Player 2 for life",
@@ -532,12 +426,11 @@
             "Alert: Best girlfriend ever", "Notice: Obsessed with you.",
             "Drop: Infinite Cuddle Voucher", "System: Favorite notification",
             "Message: <3 <3 <3", "Nerf: Distance is OP, pls nerf",
-            "Drop: Legendary Item [My Heart]", "Summoning: One sleepy boyfriend...",
+            "Drop: Legendary Item [My Heart]", "Summoning: One sleepy girlfriend...",
             "System: Connection established", "Buff: Infinite Patience",
             "Patch Note: You just got cuter", "Status: Simping for Destiny",
             "Loot Box: 100% pure love", "Warning: Excessive cuteness",
             "Skill Unlocked: Making me smile", "Drop: Protection Charm",
-            "Bat Signal: Sending love 🦇", "Message: Goth and gorgeous",
             "Respawn Point: In my arms", "Quest: Drink water",
             "Reminder: Check posture", "Quest: Eat something yummy"
         ];
@@ -545,10 +438,14 @@
         function updateSystem() {
             const now = new Date();
             const diff = now - startDate;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
+            
+            // Prevent negative days if checking before the start date locally
+            const effectiveDiff = diff > 0 ? diff : 0;
+            
+            const days = Math.floor(effectiveDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((effectiveDiff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((effectiveDiff / (1000 * 60)) % 60);
+            const seconds = Math.floor((effectiveDiff / 1000) % 60);
 
             document.getElementById('uptime-days').innerHTML =
                 `<span class="big-number">${days}</span> <span class="big-text">DAYS</span>`;
