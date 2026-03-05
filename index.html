@@ -4,343 +4,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Love Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <title>Elliot & Destiny 🖤</title>
+    <link rel="icon" type="image/png" href="delta.png">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+
     <style>
+        /* --- THEME CONFIG --- */
         :root {
-            --primary: #ff4b6e;
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --bg-deep: #050505;
+            --panel-bg: rgba(20, 20, 20, 0.9);
+            --border-color: #333;
+            --p1-color: #00f3ff;
+            --p2-color: #b026ff;
+            --text-main: #fff;
+            --text-dim: #888;
+            --active-green: #00ff41;
+            --quest-gold: #ffd700;
         }
 
         body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
             margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(45deg, #1a1a2e, #16213e, #ff4b6e, #1a1a2e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: white;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            /* Removes blue tap box on mobile */
-        }
-
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* The Glass Card */
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px 30px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            z-index: 10;
+            overflow-x: hidden;
             position: relative;
+            touch-action: manipulation;
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, var(--bg-deep) 100%);
+            transition: background 0.5s ease;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin: 0 0 10px 0;
-            font-weight: 800;
-            background: -webkit-linear-gradient(#fff, #ffd1d1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        /* The Counter Area */
-        .stat-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 40px;
-        }
-
-        .count-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            margin-bottom: 5px;
-        }
-
-        #counter {
-            font-size: 3rem;
-            font-weight: 600;
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 20px rgba(255, 75, 110, 0.6);
-        }
-
-        /* Buttons */
-        .btn-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            min-height: 150px;
-            /* Keeps layout stable */
-        }
-
-        button {
-            padding: 16px 0;
-            width: 100%;
-            border-radius: 12px;
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            font-family: 'Outfit', sans-serif;
-            cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            outline: none;
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        /* The Correct Button */
-        #truthBtn {
-            background: white;
-            color: #ff4b6e;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-        }
-
-        /* The Lie Button (The Runner) */
-        #lieBtn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Background Particles */
-        .particle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-
-        /* Winner Modal */
-        .overlay {
+        /* --- BACKGROUND ANIMATION --- */
+        .emoji-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
+            z-index: 0;
+            opacity: 0.08;
+            pointer-events: none;
+            font-size: 4rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            overflow: hidden;
+        }
+
+        .emoji-bg span {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .emoji-bg span:nth-child(even) {
+            animation-duration: 8s;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- ZELDA SHIELD (Hidden by default) --- */
+        #hylian-shield {
+            position: absolute;
+            top: 40px;
+            width: 120px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 15px #ffd700);
+        }
+
+        .main-hub {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            z-index: 2;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: -webkit-linear-gradient(0deg, var(--p1-color), #fff, var(--p2-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
+            line-height: 1.5;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            z-index: 3;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Press Start 2P';
+            line-height: 1.8;
+        }
+
+        .status-active {
+            color: var(--active-green);
+            text-shadow: 0 0 10px var(--active-green);
+            animation: pulseGreen 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGreen {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+
+        /* --- UPTIME TRACKER --- */
+        .uptime-container {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--text-dim);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.05);
             backdrop-filter: blur(5px);
         }
 
-        .overlay h2 {
-            font-size: 3rem;
-            color: #ff4b6e;
-            margin-bottom: 10px;
+        .uptime-label {
+            color: var(--p1-color);
+            font-family: 'Press Start 2P';
+            font-size: 0.7rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
         }
 
-        .overlay p {
-            font-size: 1.5rem;
+        .big-days-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .big-number {
+            font-family: 'Press Start 2P';
+            font-size: 2.2rem;
+            color: var(--p2-color);
+            text-shadow: 3px 3px 0 #000;
+            line-height: 1;
+        }
+
+        .big-text {
+            font-family: 'Press Start 2P';
+            font-size: 2.2rem;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .small-time {
+            font-family: 'Press Start 2P';
+            font-size: 0.8rem;
+            color: #ccc;
+            letter-spacing: 1px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .small-num { color: var(--p2-color); }
+
+        /* --- PLAYER CARDS --- */
+        .player-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .player-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            border-bottom-width: 4px;
+            border-bottom-style: solid;
+            transition: 0.3s;
+        }
+
+        .player-card.p1 { border-bottom-color: var(--p1-color); }
+        .player-card.p2 { border-bottom-color: var(--p2-color); }
+
+        .player-header {
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
+        }
+
+        .player-header span, .player-name {
+            font-family: 'Press Start 2P'; font-size: 0.9rem; color: #fff; line-height: 1;
+        }
+
+        .location-tag {
+            font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;
+        }
+
+        .clock-display {
+            font-size: 1.8rem; font-weight: 700; font-family: 'Rajdhani', monospace; color: #fff;
+        }
+
+        /* --- COMMAND GRID --- */
+        .command-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .loot-btn {
+            background: transparent;
+            border: 2px solid var(--p2-color);
+            color: var(--p2-color);
+            padding: 15px 25px;
+            font-family: 'Press Start 2P';
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 10px rgba(176, 38, 255, 0.1);
+            text-transform: uppercase;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .loot-btn:hover {
+            background: var(--p2-color); color: #000;
+            box-shadow: 0 0 25px var(--p2-color);
+            transform: scale(1.02);
+        }
+
+        #loot-result {
+            margin-top: 10px; margin-bottom: 20px; min-height: 20px; color: var(--p1-color);
+            font-family: 'Rajdhani', monospace; font-size: 1.2rem; font-weight: bold;
+        }
+
+        /* --- THEME SELECTOR --- */
+        .config-box {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            margin-bottom: 40px;
+        }
+        .config-title {
+            font-family: 'Press Start 2P'; font-size: 0.6rem; color: #666; margin-bottom: 15px;
+        }
+        .theme-row {
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+        }
+        .theme-btn {
+            background: #111; border: 1px solid #444; color: #888;
+            padding: 8px 12px; font-family: 'Rajdhani'; font-weight: bold; cursor: pointer;
+            font-size: 0.8rem; text-transform: uppercase; transition: 0.2s;
+        }
+        .theme-btn:hover { border-color: #fff; color: #fff; }
+
+        /* --- QUEST LOG --- */
+        .quest-box {
+            background: #000; border: 2px solid var(--text-dim); border-radius: 4px;
+            padding: 20px; text-align: left; margin-bottom: 40px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .quest-title {
+            font-family: 'Press Start 2P'; color: var(--quest-gold); font-size: 0.8rem;
+            margin-bottom: 20px; text-align: center; text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .quest-item {
+            display: flex; align-items: center; margin-bottom: 12px;
+            font-family: 'Rajdhani', monospace; font-size: 1.1rem; color: #ccc; transition: 0.3s;
+        }
+
+        .quest-item.completed { color: #555; text-decoration: line-through; }
+
+        .quest-checkbox {
+            appearance: none; width: 15px; height: 15px; border: 2px solid var(--p1-color);
+            margin-right: 15px; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+
+        .quest-checkbox:checked { background: var(--p1-color); }
+        .quest-checkbox:checked::after { content: '✔'; color: #000; font-size: 10px; font-weight: bold; }
+
+        /* --- MINIGAME SECTION --- */
+        .game-area {
+            border-top: 1px solid #333; padding-top: 30px; width: 100%;
+        }
+
+        .game-title {
+            font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px;
+        }
+
+        #gameCanvas {
+            background: #000; border: 2px solid var(--p1-color);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            display: block; margin: 0 auto; border-radius: 4px; cursor: pointer;
+        }
+
+        .game-msg {
+            margin-top: 10px; font-size: 0.8rem; color: #666; font-family: 'Press Start 2P';
+        }
+
+        /* --- CHEAT CODE RAIN --- */
+        .rain-container {
+            position: fixed; top: -50px; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; overflow: hidden; display: none;
+        }
+
+        .rain-drop {
+            position: absolute; top: -20px; font-size: 2rem; animation: fall linear forwards;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* --- MOBILE ADJUSTMENTS --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.1rem; margin-bottom: 10px; }
+            .status-active { display: block; margin-top: 5px; }
+            .subtitle { font-size: 0.7rem; letter-spacing: 1px; }
+            .big-number, .big-text { font-size: 1.5rem; }
+            .small-time { font-size: 0.65rem; }
+            .player-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .clock-display { font-size: 1.4rem; }
+            .player-header span, .player-name { font-size: 0.6rem; }
+            #gameCanvas { width: 100%; }
+            .main-hub { padding-top: 20px; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="card">
-        <h1>Love Stats</h1>
-        <p>Calculating who loves who more...</p>
-
-        <div class="stat-box">
-            <div class="count-label">My Love for You</div>
-            <div id="counter">0</div>
-        </div>
-
-        <div class="btn-wrapper">
-            <button id="truthBtn">You love me more</button>
-            <button id="lieBtn">I love you more</button>
-        </div>
+    <div class="emoji-bg" id="emoji-container">
+        <span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span>
+        <span>🕷️</span> <span>🗡️</span> <span>🖤</span> <span>👾</span>
     </div>
 
-    <div class="overlay" id="overlay">
-        <h2>CORRECT!</h2>
-        <p>Good girl Lou. I knew you'd admit it eventually.</p>
-        <p>❤️</p>
+    <div id="rain-box" class="rain-container"></div>
+
+    <div class="main-hub">
+        <img id="hylian-shield" src="zeldashield.png" alt="Shield">
+        
+        <h1 onclick="triggerMobileCheat()">Server: E & D</h1>
+
+        <div class="subtitle">
+            CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
+        </div>
+
+        <div class="uptime-container">
+            <span class="uptime-label">🎮 Connection Uptime 🎮</span>
+
+            <div id="uptime-days" class="big-days-container">
+                <span class="big-number">0</span>
+                <span class="big-text">DAYS</span>
+            </div>
+
+            <div id="uptime-time" class="small-time">0 HRS 0 MINS 0 SECS</div>
+        </div>
+
+        <div class="player-grid">
+            <div class="player-card p1">
+                <div class="player-header">
+                    <span>VN</span>
+                    <div class="player-name">ELLIOT</div>
+                </div>
+                <div class="location-tag">Base: Vietnam</div>
+                <div class="clock-display" id="clock-vn">--:--</div>
+            </div>
+
+            <div class="player-card p2">
+                <div class="player-header">
+                    <span>US</span>
+                    <div class="player-name">DESTINY</div>
+                </div>
+                <div class="location-tag">Base: USA</div>
+                <div class="clock-display" id="clock-us">--:--</div>
+            </div>
+        </div>
+
+        <div id="loot-result"></div>
+
+        <div class="command-grid">
+            <button class="loot-btn" onclick="dropLoot()">🎁 DAILY LOOT BOX</button>
+
+            <a href="comfort.html" style="text-decoration: none;">
+                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">
+                    ♥ COMFORT PROTOCOL ♥
+                </button>
+            </a>
+
+            <a href="boss.html" style="text-decoration: none;">
+                <button class="loot-btn" style="border-color: #fff; color: #fff;">
+                    ⚠️ BOSS RAID ⚠️
+                </button>
+            </a>
+        </div>
+
+        <div class="config-box">
+            <div class="config-title">SYSTEM CONFIGURATION</div>
+            <div class="theme-row">
+                <button class="theme-btn" onclick="setTheme('default')">DEFAULT</button>
+                <button class="theme-btn" onclick="setTheme('love')">LOVER.OS</button>
+                <button class="theme-btn" onclick="setTheme('matrix')">NETRUNNER</button>
+                <button class="theme-btn" onclick="setTheme('hyrule')" style="color: gold; border-color: gold;">HYRULE</button>
+            </div>
+        </div>
+
+        <div class="quest-box">
+            <div class="quest-title">📜 Daily Quests</div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" disabled>
+                <span>🛡️ Main: Close the Distance</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q1" onchange="toggleQuest('q1')">
+                <span>💧 Drink Water</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q2" onchange="toggleQuest('q2')">
+                <span>📞 Call / Voice Note</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q3" onchange="toggleQuest('q3')">
+                <span>📸 Send Cute Pic</span>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="game-title">MINIGAME: JUMP THE LAG</div>
+            <canvas id="gameCanvas" width="600" height="150"></canvas>
+            <div class="game-msg">HIGH SCORE: <span id="high-score">0</span>km</div>
+            <div class="game-msg">Press SPACE or TAP to Jump</div>
+        </div>
     </div>
 
     <script>
-        // --- 1. The Infinite Counter ---
-        const counter = document.getElementById('counter');
-        let count = 0;
+        // --- CONFIGURATION ---
+        const startDate = new Date('2026-03-05T00:00:00'); // Reset to today!
+        const herTimeZone = 'America/Chicago'; // Central Time matches the 13hr gap exactly
 
-        setInterval(() => {
-            count += Math.floor(Math.random() * 415);
-            counter.innerText = count.toLocaleString();
-        }, 40);
-
-
-        // --- 2. The Runaway Logic (Mobile & Desktop) ---
-        const lieBtn = document.getElementById('lieBtn');
-        const truthBtn = document.getElementById('truthBtn');
-        const overlay = document.getElementById('overlay');
-
-        // Helper to move the button
-        function moveButton(e) {
-            // Prevent the click from triggering
-            if (e) e.preventDefault();
-
-            // Get screen dimensions
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-
-            // Button dimensions
-            const btnW = lieBtn.offsetWidth;
-            const btnH = lieBtn.offsetHeight;
-
-            // Generate random position, but keep it inside the screen (with 20px padding)
-            const newX = Math.random() * (w - btnW - 40) + 20;
-            const newY = Math.random() * (h - btnH - 40) + 20;
-
-            lieBtn.style.position = 'fixed';
-            lieBtn.style.left = newX + 'px';
-            lieBtn.style.top = newY + 'px';
-            lieBtn.style.zIndex = '1000'; // Make sure it sits on top of everything
+        // --- THEME SWITCHER LOGIC ---
+        function setTheme(theme) {
+            const root = document.documentElement;
+            const shield = document.getElementById('hylian-shield');
+            const bg = document.getElementById('emoji-container');
+            
+            // RESET
+            shield.style.opacity = '0';
+            shield.style.transform = 'translateY(0) scale(1)';
+            
+            if (theme === 'default') {
+                root.style.setProperty('--p1-color', '#00f3ff');
+                root.style.setProperty('--p2-color', '#b026ff');
+                root.style.setProperty('--active-green', '#00ff41');
+                root.style.setProperty('--bg-deep', '#050505');
+                bg.innerHTML = '<span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span> <span>🕷️</span> <span>🗡️</span>';
+            } 
+            else if (theme === 'love') {
+                root.style.setProperty('--p1-color', '#ff3366');
+                root.style.setProperty('--p2-color', '#ff99cc');
+                root.style.setProperty('--active-green', '#ff3366');
+                root.style.setProperty('--bg-deep', '#1a0505');
+                bg.innerHTML = '<span>💖</span> <span>💋</span> <span>💌</span> <span>💑</span> <span>🌸</span> <span>🎀</span>';
+            } 
+            else if (theme === 'matrix') {
+                root.style.setProperty('--p1-color', '#00ff00');
+                root.style.setProperty('--p2-color', '#008f11');
+                root.style.setProperty('--active-green', '#00ff00');
+                root.style.setProperty('--bg-deep', '#000000');
+                bg.innerHTML = '<span>0</span> <span>1</span> <span>0</span> <span>1</span> <span>💾</span> <span>📠</span>';
+            }
+            else if (theme === 'hyrule') {
+                root.style.setProperty('--p1-color', '#10a830'); /* Link Green */
+                root.style.setProperty('--p2-color', '#ffd700'); /* Zelda Gold */
+                root.style.setProperty('--active-green', '#ffd700');
+                root.style.setProperty('--bg-deep', '#0a0800'); /* Deep Earth */
+                bg.innerHTML = '<span>🗡️</span> <span>🛡️</span> <span>🧚</span> <span>💎</span> <span>🏺</span> <span>🏹</span>';
+                
+                // Show Shield
+                shield.style.opacity = '1';
+                shield.style.transform = 'translateY(-20px) scale(1.1)';
+            }
+            
+            localStorage.setItem('siteTheme', theme);
         }
 
-        // Desktop: Run on hover
-        lieBtn.addEventListener('mouseover', moveButton);
+        // Load saved theme
+        const savedTheme = localStorage.getItem('siteTheme');
+        if (savedTheme) setTheme(savedTheme);
 
-        // Mobile: Run on touch (and prevent the click)
-        lieBtn.addEventListener('touchstart', moveButton, { passive: false });
+        // --- LOOT ---
+        const lootTable = [
+            "Item: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
+            "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon",
+            "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
+            "Reminder: We make a great team 🎮", "Drop: Virtual Forehead Kiss",
+            "Achievement: Woke up cute today", "System: I miss you more than my PC",
+            "Buff: +50 Happiness", "Note: You are my Player 2 for life",
+            "Reward: 1x Virtual Hoodie", "Status: Love-struck",
+            "Drop: 1000 Headpats", "Message: Stop being so pretty (jk don't stop)",
+            "Ping: 0ms (My heart is right there)", "Loot: One (1) Aggressive Hug",
+            "Alert: Best girlfriend ever", "Notice: Obsessed with you.",
+            "Drop: Infinite Cuddle Voucher", "System: Favorite notification",
+            "Message: <3 <3 <3", "Nerf: Distance is OP, pls nerf",
+            "Drop: Legendary Item [My Heart]", "Summoning: One sleepy boyfriend...",
+            "System: Connection established", "Buff: Infinite Patience",
+            "Patch Note: You just got cuter", "Status: Simping for Destiny",
+            "Loot Box: 100% pure love", "Warning: Excessive cuteness",
+            "Skill Unlocked: Making me smile", "Drop: Protection Charm",
+            "Bat Signal: Sending love 🦇", "Message: Goth and gorgeous",
+            "Respawn Point: In my arms", "Quest: Drink water",
+            "Reminder: Check posture", "Quest: Eat something yummy"
+        ];
 
-        // Just in case they are fast clickers on desktop
-        lieBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            moveButton();
+        function updateSystem() {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('uptime-days').innerHTML =
+                `<span class="big-number">${days}</span> <span class="big-text">DAYS</span>`;
+
+            document.getElementById('uptime-time').innerHTML =
+                `<span class="small-num">${hours}</span> HRS ` +
+                `<span class="small-num">${minutes}</span> MINS ` +
+                `<span class="small-num">${seconds}</span> SECS`;
+
+            const timeOpt = { hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('clock-vn').innerText = now.toLocaleTimeString('en-US', { ...timeOpt, timeZone: 'Asia/Ho_Chi_Minh' });
+            document.getElementById('clock-us').innerText = now.toLocaleTimeString('en-US', { ...timeOpt, timeZone: herTimeZone });
+        }
+
+        function dropLoot() {
+            const resultBox = document.getElementById('loot-result');
+            const randomItem = lootTable[Math.floor(Math.random() * lootTable.length)];
+            resultBox.innerText = randomItem;
+        }
+        setInterval(updateSystem, 1000);
+        updateSystem();
+
+        // --- QUEST LOG ---
+        function toggleQuest(id) {
+            const checkbox = document.getElementById(id);
+            const parent = checkbox.parentElement;
+
+            if (checkbox.checked) {
+                parent.classList.add('completed');
+                localStorage.setItem(id, 'done');
+            } else {
+                parent.classList.remove('completed');
+                localStorage.removeItem(id);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            ['q1', 'q2', 'q3'].forEach(id => {
+                if (localStorage.getItem(id) === 'done') {
+                    document.getElementById(id).checked = true;
+                    document.getElementById(id).parentElement.classList.add('completed');
+                }
+            });
         });
 
+        // --- CHEAT CODE ---
+        let keySequence = [];
+        const secretCode = "love";
 
-        // --- 3. The Winner Logic (Confetti) ---
-        truthBtn.addEventListener('click', () => {
-            overlay.style.display = 'flex';
-            fireConfetti();
+        document.addEventListener('keydown', (e) => {
+            keySequence.push(e.key.toLowerCase());
+            if (keySequence.length > secretCode.length) keySequence.shift();
+
+            if (keySequence.join('') === secretCode) {
+                triggerRain();
+            }
         });
 
+        let tapCount = 0;
+        let tapTimer;
+        function triggerMobileCheat() {
+            tapCount++;
+            clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { tapCount = 0; }, 1000); 
 
-        // --- 4. Simple Canvas Confetti System ---
-        function fireConfetti() {
-            const canvas = document.createElement('canvas');
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '999';
-            document.body.appendChild(canvas);
-
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const colors = ['#ff4b6e', '#ffffff', '#ffb6c1', '#fad0c4'];
-
-            for (let i = 0; i < 150; i++) {
-                particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 15,
-                    vy: (Math.random() - 0.5) * 15,
-                    size: Math.random() * 8 + 2,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    life: 100
-                });
+            if (tapCount === 5) {
+                triggerRain();
+                tapCount = 0;
             }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach((p, index) => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.2; // Gravity
-                    p.life--;
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    if (p.life <= 0) particles.splice(index, 1);
-                });
-
-                if (particles.length > 0) requestAnimationFrame(animate);
-                else canvas.remove();
-            }
-            animate();
         }
 
-        // --- 5. Ambient Background Particles ---
-        function createAmbientParticles() {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
+        function triggerRain() {
+            const rainBox = document.getElementById('rain-box');
+            rainBox.style.display = 'block';
 
-            const size = Math.random() * 5 + 2;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
+            const emojis = ['❤️', '🖤', '👾', '🎮', '💀', '💋'];
 
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = '100vh';
+            for (let i = 0; i < 50; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                drop.style.fontSize = (Math.random() * 2 + 1) + 'rem';
 
-            const duration = Math.random() * 10 + 5;
-            particle.style.transition = `top ${duration}s linear, opacity ${duration}s ease`;
-
-            document.body.appendChild(particle);
-
-            // Trigger animation
-            setTimeout(() => {
-                particle.style.top = '-10vh';
-                particle.style.opacity = '0';
-            }, 100);
-
-            setTimeout(() => {
-                particle.remove();
-            }, duration * 1000);
+                rainBox.appendChild(drop);
+                setTimeout(() => drop.remove(), 4000);
+            }
+            setTimeout(() => rainBox.style.display = 'none', 4000);
         }
-        setInterval(createAmbientParticles, 500);
 
+        // --- MINIGAME ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let highScore = localStorage.getItem('dinoHighScore') || 0;
+        document.getElementById('high-score').innerText = highScore;
+
+        let gameRunning = false;
+        let score = 0;
+
+        let isMobile = window.innerWidth < 600;
+        let speed = isMobile ? 14 : 6;
+        let gravity = isMobile ? 0.9 : 0.5;
+        let jumpPower = isMobile ? -13 : -10;
+
+        let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
+        let obstacles = [];
+        let frame = 0;
+
+        function drawPlayer() {
+            const p1Color = getComputedStyle(document.documentElement).getPropertyValue('--p1-color').trim();
+            ctx.fillStyle = p1Color;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = p1Color;
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.shadowBlur = 0;
+        }
+
+        function drawObstacles() {
+            const p2Color = getComputedStyle(document.documentElement).getPropertyValue('--p2-color').trim();
+            obstacles.forEach(obs => {
+                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d';
+                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41';
+                else ctx.fillStyle = p2Color;
+
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            });
+        }
+
+        function updateGame() {
+            if (!gameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            player.dy += gravity;
+            player.y += player.dy;
+
+            if (player.y > 110) {
+                player.y = 110;
+                player.dy = 0;
+                player.grounded = true;
+            }
+
+            frame++;
+            let spawnRate = isMobile ? 40 : 90;
+
+            if (frame % spawnRate === 0) {
+                let typeSeed = Math.random();
+                let newObs = { x: canvas.width, y: 110, w: 20, h: 20, type: 'std' };
+
+                if (typeSeed > 0.7) {
+                    newObs.type = 'fly'; newObs.y = 90; newObs.h = 15; newObs.w = 15;
+                } else if (typeSeed > 0.4) {
+                    newObs.type = 'wide'; newObs.y = 115; newObs.w = 30; newObs.h = 15;
+                } else {
+                    newObs.y = 110; newObs.h = 20;
+                }
+                obstacles.push(newObs);
+            }
+
+            obstacles.forEach((obs, index) => {
+                obs.x -= speed;
+
+                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.h + player.y > obs.y) {
+                    gameOver();
+                }
+
+                if (obs.x + obs.w < 0) {
+                    obstacles.splice(index, 1);
+                    score += 10;
+                }
+            });
+
+            drawPlayer();
+            drawObstacles();
+
+            ctx.fillStyle = '#fff';
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillText("DISTANCE: " + score + "km", 10, 20);
+
+            requestAnimationFrame(updateGame);
+        }
+
+        function jump() {
+            if (!gameRunning) {
+                resetGame();
+            } else if (player.grounded) {
+                player.dy = player.jumpPower;
+                player.grounded = false;
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('dinoHighScore', highScore);
+                document.getElementById('high-score').innerText = highScore;
+            }
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillText("GAME OVER", 250, 60);
+            ctx.fillText("Score: " + score, 260, 80);
+            ctx.fillText("Tap to Retry", 245, 100);
+        }
+
+        function resetGame() {
+            gameRunning = true;
+            score = 0;
+            obstacles = [];
+            player.y = 110;
+            player.dy = 0;
+            frame = 0;
+            updateGame();
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); jump(); } });
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+        canvas.addEventListener('mousedown', (e) => { e.preventDefault(); jump(); });
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '12px "Press Start 2P"';
+        ctx.fillText("CLICK TO START", 230, 80);
     </script>
 </body>
 
